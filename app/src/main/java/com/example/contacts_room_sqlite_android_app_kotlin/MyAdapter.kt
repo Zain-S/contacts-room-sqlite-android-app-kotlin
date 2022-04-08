@@ -26,18 +26,16 @@ class MyAdapter(private val context: Context, dataSet: ArrayList<Contact>, priva
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_contact, parent, false)
-        tvSNo = view.findViewById(R.id.tv_sr_no)
-        tvName = view.findViewById(R.id.et_name)
-        tvPhoneNumber = view.findViewById(R.id.et_phone_number)
+        tvName = view.findViewById(R.id.tv_layout_name)
+        tvPhoneNumber = view.findViewById(R.id.tv_layout_phone_number)
         clView = view. findViewById(R.id.cl_view)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("Contacts",contacts.toString())
-        tvSNo.text = (contacts[position].getSno())
-        tvName.text = (contacts[position].getName())
-        tvPhoneNumber.text = (contacts[position].getPhoneNumber())
+        tvName.text = (contacts[position].name)
+        tvPhoneNumber.text = (contacts[position].phoneNumber)
         clView.setOnClickListener {
             onClickListener.onClick(contacts[holder.adapterPosition], context)
         }
@@ -47,9 +45,21 @@ class MyAdapter(private val context: Context, dataSet: ArrayList<Contact>, priva
         return contacts.size
     }
 
-    fun addData(contact: Contact){
+    fun updateList(contactList: ArrayList<Contact>){
+        contacts = contactList
+        notifyDataSetChanged()
+    }
+    fun addContact(contact: Contact){
         contacts.add(contact)
-        Log.d("debugging",contacts.toString())
+    }
+
+    fun addContactList(contactList: List<Contact>){
+        contacts.addAll(contactList)
+        notifyDataSetChanged()
+    }
+
+    fun fetchData(contactList: List<Contact>){
+        contacts.addAll(contactList)
     }
 
     fun deleteData(position: Int){

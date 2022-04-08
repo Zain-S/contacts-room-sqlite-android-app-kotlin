@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.viewModels
 
 class AddContact : AppCompatActivity() {
 
     private lateinit var etName: EditText
     private lateinit var etPhoneNumber: EditText
     private lateinit var btSubmit: Button
+    private val contactViewModel: ContactViewModel by viewModels {
+        ContactViewModelFactory((application as ContactApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,7 @@ class AddContact : AppCompatActivity() {
             setResult(Activity.RESULT_OK, Intent(this.applicationContext, MainActivity::class.java)
                 .putExtra("name", etName.text.toString())
                 .putExtra("phoneNumber", etPhoneNumber.text.toString()))
+            contactViewModel.insert(Contact(etName.text.toString(), etPhoneNumber.text.toString()))
             finish()
         }
     }

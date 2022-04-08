@@ -17,17 +17,7 @@
         android:src="@drawable/contact" />
 
     <TextView
-        android:id="@+id/tv_sr_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Serial Number   :"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/et_name"
+        android:id="@+id/tv_layout_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
@@ -35,10 +25,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sr_no"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/et_phone_number"
+        android:id="@+id/tv_layout_phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
@@ -48,7 +38,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/et_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_layout_name"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

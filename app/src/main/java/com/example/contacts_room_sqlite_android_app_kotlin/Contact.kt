@@ -1,21 +1,11 @@
 package com.example.contacts_room_sqlite_android_app_kotlin
 
-class Contact(_sNo: Int, _phoneNumber: String, _name: String) {
-    private var sNo = _sNo
-    private var phoneNumber: String = _phoneNumber
-    private var name:String = _name
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    fun getSno(): String{
-        return sNo.toString()
-    }
-    fun getPhoneNumber(): String{
-        return phoneNumber
-    }
-    fun getName(): String{
-        return name
-    }
-
-    override fun toString(): String {
-        return getSno()+getName()+getPhoneNumber()
-    }
-}
+@Entity(tableName = "contact_table")
+class Contact(
+    @PrimaryKey
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "phoneNumber") val phoneNumber: String)
