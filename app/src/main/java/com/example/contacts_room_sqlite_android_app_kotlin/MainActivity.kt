@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MyAdapter
     private lateinit var dummyList: ArrayList<Contact>
+    private lateinit var onIntentReceived: onIntentReceived
+    private val REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             adapter.updateList(contact as ArrayList<Contact>)
         }
 
-
+        onIntentReceived = adapter
 
         // swipe functionality
         val swipeGesture = object : SwipeGesture(this){
@@ -75,15 +77,23 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
 //                    adapter.addContact(Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString()))
 //                    contactViewModel.insert((Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString())))
-
-                }
-                contactViewModel.allContacts.observe(this) { contact ->
-                    adapter.updateList(contact as ArrayList<Contact>)
+                        contactViewModel.allContacts.observe(this) { contact ->
+                        adapter.updateList(contact as ArrayList<Contact>)
+                    }
                 }
             }
         }
         binding.btFloat.setOnClickListener{
             resultLauncher.launch(Intent(this, AddContact::class.java))
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE){
+            if (data != null) {
+                onIntentReceived.onIntent(data, resultCode)
+            }
         }
     }
 }

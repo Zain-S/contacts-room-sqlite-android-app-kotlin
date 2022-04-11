@@ -1,15 +1,17 @@
 package com.example.contacts_room_sqlite_android_app_kotlin
 
+import android.app.Activity
 import android.content.Context
-import android.util.Log
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdapter.ViewHolder>(), onIntentReceived{
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
@@ -19,6 +21,7 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
     private var contactsList: ArrayList<Contact> = ArrayList()
     private lateinit var context: Context
     private var onClickListener = _onClickListener
+
 
     interface OnClickListeners{
         fun onClick(contact: Contact, context: Context)
@@ -37,7 +40,11 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
         tvName.text = (contactsList[position].name)
         tvPhoneNumber.text = (contactsList[position].phoneNumber)
         clView.setOnClickListener {
-            onClickListener.onClick(contactsList[holder.bindingAdapterPosition], context)
+            (context as Activity)
+                .startActivityForResult(Intent((context), ContactDetails::class.java)
+                .putExtra("name", tvName.text.toString())
+                .putExtra("phoneNumber", tvPhoneNumber.text.toString())
+                , Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }
 
@@ -67,5 +74,9 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
         contactsList.removeAt(position)
         notifyItemRemoved(position)
         return contact
+    }
+
+    override fun onIntent(intent: Intent, resultCode: Int) {
+        updateList(Contact(intent.getStringExtra("name").toString(), intent.getStringExtra("phoneNumber").toString()) as ArrayList<Contact>)
     }
 }

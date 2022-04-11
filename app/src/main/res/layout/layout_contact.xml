@@ -14,33 +14,31 @@
         android:layout_height="95dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/contact" />
-
+        android:src="@drawable/contact"/>
     <TextView
         android:id="@+id/tv_layout_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:text="Name                  :"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginVertical="10dp"/>
 
     <TextView
         android:id="@+id/tv_layout_phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="176dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="left"
         android:text="Phone Number  :"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/tv_layout_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_layout_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
