@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         dummyList = ArrayList()
 
         //adapter
-        adapter = MyAdapter(this, dummyList, onClickListener)
+        adapter = MyAdapter(onClickListener)
         contactViewModel.allContacts.observe(this) { contact ->
             adapter.updateList(contact as ArrayList<Contact>)
         }
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when(direction){
                     ItemTouchHelper.LEFT -> {
-                        adapter.deleteData(viewHolder.absoluteAdapterPosition)
+                        contactViewModel.delete(adapter.deleteData(viewHolder.absoluteAdapterPosition))
                     }
                 }
             }
@@ -74,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                 val data: Intent? = result.data
                 if (data != null) {
 //                    adapter.addContact(Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString()))
+//                    contactViewModel.insert((Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString())))
+
                 }
                 contactViewModel.allContacts.observe(this) { contact ->
                     adapter.updateList(contact as ArrayList<Contact>)
