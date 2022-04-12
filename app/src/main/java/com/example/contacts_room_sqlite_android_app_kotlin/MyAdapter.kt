@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdapter.ViewHolder>(), onIntentReceived{
+class MyAdapter(_onClickListener: OnClickListeners, contactViewModel: ContactViewModel): RecyclerView.Adapter<MyAdapter.ViewHolder>(), onIntentReceived{
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
@@ -21,10 +21,11 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
     private var contactsList: ArrayList<Contact> = ArrayList()
     private lateinit var context: Context
     private var onClickListener = _onClickListener
-
+    private var contactViewModel: ContactViewModel = contactViewModel
 
     interface OnClickListeners{
         fun onClick(contact: Contact, context: Context)
+        fun onUpdateData()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //initialize
@@ -40,10 +41,10 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
         tvName.text = (contactsList[position].name)
         tvPhoneNumber.text = (contactsList[position].phoneNumber)
         clView.setOnClickListener {
-            (context as Activity)
+            (clView.context as Activity)
                 .startActivityForResult(Intent((context), ContactDetails::class.java)
-                .putExtra("name", tvName.text.toString())
-                .putExtra("phoneNumber", tvPhoneNumber.text.toString())
+                .putExtra("name", contactsList[position].name)
+                .putExtra("phoneNumber", contactsList[position].phoneNumber)
                 , Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }
@@ -53,11 +54,13 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
     }
 
     fun updateList(contactList: ArrayList<Contact>){
+        contactsList.clear()
         contactsList = contactList
         notifyDataSetChanged()
     }
     fun addContact(contact: Contact){
         contactsList.add(contact)
+        notifyDataSetChanged()
     }
 
     fun addContactList(contactList: List<Contact>){
@@ -77,6 +80,7 @@ class MyAdapter(_onClickListener: OnClickListeners): RecyclerView.Adapter<MyAdap
     }
 
     override fun onIntent(intent: Intent, resultCode: Int) {
-        updateList(Contact(intent.getStringExtra("name").toString(), intent.getStringExtra("phoneNumber").toString()) as ArrayList<Contact>)
+//        contactViewModel.update(Contact(intent.getStringExtra("name").toString(), intent.getStringExtra("phoneNumber").toString()))
+//        onClickListener.onUpdateData()
     }
 }

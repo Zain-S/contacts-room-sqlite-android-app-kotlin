@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MyAdapter
-    private lateinit var dummyList: ArrayList<Contact>
     private lateinit var onIntentReceived: onIntentReceived
     private val REQUEST_CODE = 101
 
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvContacts.layoutManager = LinearLayoutManager(this)
 
+        val lifecycleOwner = this
         // onClickListener
         val onClickListener = object: MyAdapter.OnClickListeners{
             override fun onClick(contact: Contact, context: Context) {
@@ -42,13 +43,17 @@ class MainActivity : AppCompatActivity() {
                     .putExtra("phoneNumber", contact.phoneNumber)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
+
+            override fun onUpdateData() {
+                contactViewModel.allContacts.observe(lifecycleOwner) { contact ->
+                    adapter.updateList(contact as ArrayList<Contact>)
+                }
+            }
         }
 
-        //array
-        dummyList = ArrayList()
 
         //adapter
-        adapter = MyAdapter(onClickListener)
+        adapter = MyAdapter(onClickListener, contactViewModel)
         contactViewModel.allContacts.observe(this) { contact ->
             adapter.updateList(contact as ArrayList<Contact>)
         }
@@ -75,11 +80,11 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 if (data != null) {
-//                    adapter.addContact(Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString()))
-//                    contactViewModel.insert((Contact(data.getStringExtra("phoneNumber").toString(), data.getStringExtra("name").toString())))
-                        contactViewModel.allContacts.observe(this) { contact ->
-                        adapter.updateList(contact as ArrayList<Contact>)
-                    }
+                    adapter.addContact(Contact(data.getStringExtra("name").toString(), data.getStringExtra("phoneNumber").toString()))
+                    contactViewModel.insert((Contact(data.getStringExtra("name").toString(), data.getStringExtra("phoneNumber").toString())))
+//                        contactViewModel.allContacts.observe(this) { contact ->
+//                            adapter.updateList(contact as ArrayList<Contact>)
+//                    }
                 }
             }
         }

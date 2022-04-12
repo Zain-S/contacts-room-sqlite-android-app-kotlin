@@ -27,10 +27,11 @@ class AddContact : AppCompatActivity() {
 
         btSubmit.setOnClickListener{
 
-            setResult(Activity.RESULT_OK, Intent(this.applicationContext, MainActivity::class.java)
+            val replyIntent = Intent()
+            setResult(Activity.RESULT_OK, replyIntent
                 .putExtra("name", etName.text.toString())
                 .putExtra("phoneNumber", etPhoneNumber.text.toString()))
-            contactViewModel.insert(Contact(etName.text.toString(), etPhoneNumber.text.toString()))
+//            contactViewModel.insert(Contact(etName.text.toString(), etPhoneNumber.text.toString()))
             finish()
         }
     }
